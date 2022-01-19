@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="接下来，我会跟你讲讲 Git 。  版本控制的重要性 你想要把 GitHub 玩得 6 ，你想要之后跟大伙一起协作开发，亦或是你只是自己开发软件，设计产品….那么你首先都要学会 Git ，它的牛逼已经是一个事实 ——— 全世界的程序员（甚至非程序员也）都在使用 Git 。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为什么说分布式版本控制很重要？">
+<meta property="og:url" content="http://example.com/2022/01/19/git1/index.html">
+<meta property="og:site_name" content="牛逼的page">
+<meta property="og:description" content="接下来，我会跟你讲讲 Git 。  版本控制的重要性 你想要把 GitHub 玩得 6 ，你想要之后跟大伙一起协作开发，亦或是你只是自己开发软件，设计产品….那么你首先都要学会 Git ，它的牛逼已经是一个事实 ——— 全世界的程序员（甚至非程序员也）都在使用 Git 。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://vip.fxxkpython.com/wp-content/uploads/2019/07/csv-1.png">
+<meta property="og:image" content="http://vip.fxxkpython.com/wp-content/uploads/2019/07/csv-1.png">
+<meta property="og:image" content="http://vip.fxxkpython.com/wp-content/uploads/2019/07/git.png">
+<meta property="og:image" content="http://vip.fxxkpython.com/wp-content/uploads/2019/07/git.png">
+<meta property="article:published_time" content="2022-01-19T20:20:09.261Z">
+<meta property="article:modified_time" content="2022-01-19T20:31:31.130Z">
+<meta property="article:author" content="微信：j0306s_1114 有问题可以私信我">
+<meta property="article:tag" content="牛逼page, jiashu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://vip.fxxkpython.com/wp-content/uploads/2019/07/csv-1.png">
+
+
+<link rel="canonical" href="http://example.com/2022/01/19/git1/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/01/19/git1/","path":"2022/01/19/git1/","title":"为什么说分布式版本控制很重要？"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>为什么说分布式版本控制很重要？ | 牛逼的page</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">牛逼的page</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">牛逼的page，自然来自牛逼的人</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于我</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">版本控制的重要性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">集中式版本控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">分布式版本控制</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">微信：j0306s_1114 有问题可以私信我</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiashusu" title="我的GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiashusu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>我的GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:8326305209sjs@gmail.com" title="我的E-Mail → mailto:8326305209sjs@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>我的E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/19/git1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="微信：j0306s_1114 有问题可以私信我">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="牛逼的page">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          为什么说分布式版本控制很重要？
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-01-19 14:20:09 / 修改时间：14:31:31" itemprop="dateCreated datePublished" datetime="2022-01-19T14:20:09-06:00">2022-01-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/git/" itemprop="url" rel="index"><span itemprop="name">git</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>接下来，我会跟你讲讲 Git 。</p>
+</li></ul></div>
+<h3><span id="i">版本控制的重要性</span></h3>
+<p>你想要把 GitHub 玩得 6 ，你想要之后跟大伙一起协作开发，亦或是你只是自己开发软件，设计产品….那么你首先都要学会 Git ，它的牛逼已经是一个事实 ——— 全世界的程序员（甚至非程序员也）都在使用 Git 。</p>
+
+<span id="more"></span>
+
+
+<p>什么是 Git 呢？在此之前我先跟你说说 “版本控制” 这个概念。</p>
+<p>假设你现在正在开发一个产品，你不可能一顿操作猛如虎，一下子撸代码就完成了，你需要规划，我今天就完成 “用户登录” 的功能，明天完成 “个人中心” 功能，后天完成 “信息推送” 功能，大后天完成….，你会发现，你把一个大大的产品，拆分成了很多细小的 “版本” ，而在这个过程中，你可能需要不停的修改，比如你昨天写的那个版本的代码出 bug 了，你觉得前天写的那个版本的代码可以再优化一下…</p>
+<p>这还只是对你个人而言，当你在工作和团队一起协作开发项目的时候呢，你和他们可能负责不同的版本功能，那你们最后还是要把你们的代码都整合起来，完成一个完整的产品对吧？</p>
+<p>那么这个时候问题就来了，如果没有一个工具可以去帮我们控制好这些版本，如果是我们人为的操作，想必一定很麻烦，很浪费时间的，说不定哪天操作不当，还会跟对方干起来：“我操你妈逼的，你怎么把我那个版本删了，老子熬了多少个晚上，掉了多少头发才他妈写好的，你现在给老子删了我的版本？？？？”</p>
+<p>诸如此类的矛盾想必也不是你想看到的吧。</p>
+<p>所以，现在的你明白了版本控制的重要性了吗？</p>
+<h3><span id="i-2"><strong>集中式版本控制</strong></span></h3>
+<p>其实在 Git 之前，很多人用的是CVS ，也就是 Centralized Version Control ，这里的 Centralized 就是<strong>集中</strong>的意思。也就是那会，经过血的教训，人们开始意识到版本控制的重要性了，然后就搞了台服务器，在这台服务器里面就专门来管理各种版本，保存每个版本的更新、修改等操作记录。这时候一遇到什么问题，就可以直接去这台服务器找，比如你误删了代码，就到这台服务器找之前的版本，回退一下就可以了。</p>
+<div class="wp-block-image"><figure class="aligncenter"><img width="431" height="299" alt="" data-srcset="https://vip.fxxkpython.com/wp-content/uploads/2019/07/csv-1.png 431w, https://vip.fxxkpython.com/wp-content/uploads/2019/07/csv-1-300x208.png 300w" data-src="http://vip.fxxkpython.com/wp-content/uploads/2019/07/csv-1.png" data-sizes="(max-width: 431px) 100vw, 431px" class="wp-image-101 ls-is-cached lazyloaded" src="http://vip.fxxkpython.com/wp-content/uploads/2019/07/csv-1.png" sizes="(max-width: 431px) 100vw, 431px" srcset="https://vip.fxxkpython.com/wp-content/uploads/2019/07/csv-1.png 431w, https://vip.fxxkpython.com/wp-content/uploads/2019/07/csv-1-300x208.png 300w"><noscript><img width="431" height="299" src="http://vip.fxxkpython.com/wp-content/uploads/2019/07/csv-1.png" alt="" class="wp-image-101" srcset="https://vip.fxxkpython.com/wp-content/uploads/2019/07/csv-1.png 431w, https://vip.fxxkpython.com/wp-content/uploads/2019/07/csv-1-300x208.png 300w" sizes="(max-width: 431px) 100vw, 431px" /></noscript><figcaption><strong>集中式版本控制﻿</strong></figcaption></figure></div>
+<p>你们多人协作的时候，每次完成代码就更新到这台服务器上面去，这台服务器都完整的记录了你们的每个版本，每个动作。妈妈再也不用担心别人骂我傻逼了。</p>
+<p>是不是觉得还挺不错的呢，但是这种集中式的版本控制方式有一个弊端，就是哪一天服务器突然傻逼了，那么你就没办法去上面拿到别人提交的版本，你也没办法更新你最新的版本上去。更可怕的是，如果哪天这台服务器直接坏掉，挖槽，那你们之前那些所有的版本记录不就烟消云散了吗？如果没人备份的话，那岂不是操了个操了？？</p>
+<h3><span id="i-3"><strong>分布式版本控制</strong></span></h3>
+<p>为了解决这个问题，牛逼的人就想到了一个方法，他们在想，既然这样，那么何必不在每个人的电脑里面，都装一份服务器上面的版本控制管理的镜像呢？也就是说， 除了服务器上面有之外，我们的电脑，也有一份一样的控制系统。这个时候如果说服务器傻逼了，那么我们的内心毫无波动，还可以顺便唱一句：“怎么大风越荡，我心越浪”了，因为每个人本地都有（你每一次对版本的更新或者拉取，你的控制系统就是和服务器上的一样最新的，所以不用担心）啊，直接恢复就可以了。</p>
+<div class="wp-block-image"><figure class="aligncenter"><img width="661" height="441" alt="" data-srcset="https://vip.fxxkpython.com/wp-content/uploads/2019/07/git.png 661w, https://vip.fxxkpython.com/wp-content/uploads/2019/07/git-300x200.png 300w, https://vip.fxxkpython.com/wp-content/uploads/2019/07/git-640x427.png 640w" data-src="http://vip.fxxkpython.com/wp-content/uploads/2019/07/git.png" data-sizes="(max-width: 661px) 100vw, 661px" class="wp-image-102 lazyloaded" src="http://vip.fxxkpython.com/wp-content/uploads/2019/07/git.png" sizes="(max-width: 661px) 100vw, 661px" srcset="https://vip.fxxkpython.com/wp-content/uploads/2019/07/git.png 661w, https://vip.fxxkpython.com/wp-content/uploads/2019/07/git-300x200.png 300w, https://vip.fxxkpython.com/wp-content/uploads/2019/07/git-640x427.png 640w"><noscript><img width="661" height="441" src="http://vip.fxxkpython.com/wp-content/uploads/2019/07/git.png" alt="" class="wp-image-102" srcset="https://vip.fxxkpython.com/wp-content/uploads/2019/07/git.png 661w, https://vip.fxxkpython.com/wp-content/uploads/2019/07/git-300x200.png 300w, https://vip.fxxkpython.com/wp-content/uploads/2019/07/git-640x427.png 640w" sizes="(max-width: 661px) 100vw, 661px" /></noscript><figcaption>🌲🌲画图水平有待提高..</figcaption></figure></div>
+<p>这就是分布式版本控制的牛逼之处了，而 Git 就是分布式版本控制的工具，人人都在用的，已经被证明是有效、牛逼的工具了。</p>
+<p>好了，现在的你已经了解了版本控制管理的重要性，知道了分布式版本控制管理的好处，以及为什么我们要使用 Git，那么下一篇就继续说 Git 。</p>
+<p></p>
+</div>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/01/17/hexo%E7%AC%AC%E4%B8%80%E7%AF%87%E7%9A%84%E5%90%8E%E7%BB%AD/" rel="prev" title="Hexo第一篇后续 关于技巧和我收藏的网站">
+                  <i class="fa fa-chevron-left"></i> Hexo第一篇后续 关于技巧和我收藏的网站
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">微信：j0306s_1114 有问题可以私信我</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
